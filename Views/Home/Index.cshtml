@@ -1,0 +1,151 @@
+﻿@model List<FinalView>
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/jquery.snippet.min.css" rel="stylesheet">
+    <link href="~/Content/css/styles.css" rel="stylesheet">
+    <style>
+        #testname {
+            color: #08c;
+            font-family: 'FuturaExtraBold';
+            font-size: 35px;
+            font-weight: bolder;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-shadow: 0px 0px #2870F0;
+            text-align: center;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+
+        button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 22px;
+            color: black;
+        }
+
+            button:hover, a:hover {
+                opacity: 0.7;
+            }
+        canvas {
+            border: 0px solid black;
+        }
+        #easyPaginate {
+            float: left;
+            display: inline-flex;
+            padding: 10px;
+            margin: 5px;
+        }
+
+            #easyPaginate img {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+        .easyPaginateNav a {
+            padding: 5px;
+        }
+
+            .easyPaginateNav a.current {
+                font-weight: bold;
+                text-decoration: underline;
+            }
+    </style>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>*@
+    <script src="~/Scripts/1.8.1-jquery.min.js"></script>
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.snippet.min.js"></script>
+    <script src="~/Scripts/jquery.easyPaginate.js"></script>
+    <script src="~/Content/js/scripts.js"></script>
+</head>
+<body>
+
+    @*<button onclick="myFunction(Math.floor((Math.random() * 100) + 1))">Try it</button>*@
+    <div border="0" id="easyPaginate">
+        @foreach (var item in Model)
+        {        
+            <div class="card">
+                @*<img src="https://www.w3schools.com/w3images/team2.jpg" alt="John" style="width:100%">*@
+                <div id=@item.Id class="resultview" data-outer-radius="@item.OuterRadius" data-inner-radius="@item.InnerRadius" data-inner-color="@item.InnerColor" data-outer-color="@item.OuterColor"></div>
+                <h1 id="testname">@item.TestName</h1>
+                <p class="">Resulted Value: @item.OrgResultedValue</p>
+                <p>Normal Range: (@item.OrgNormalMaxValue - @item.OrgNormalMinValue)</p>
+            </div>
+        }
+    </div>
+
+    <script>
+        //$('#easyPaginate').easyPaginate({
+        //    paginateElement: 'img',
+        //    elementsPerPage: 3,
+        //    effect: 'climb'
+        //});
+        $(function () {
+            $('#easyPaginate').easyPaginate({
+                paginateElement: 'div',
+                elementsPerPage: 8,
+                effect: 'slide'
+            });
+            $('.resultview').each(function () {
+                myFunction(this);
+            });
+        });
+        function myFunction(R) {
+            var xcan = document.createElement("CANVAS");
+            xcan.width = 300;
+            xcan.height = 300;
+            var ctx = xcan.getContext('2d');
+            console.log($(R).data('inner-radius') + " " + $(R).data('outer-radius'))
+            var x = 150,
+                y = 150,
+                // Radii of the white glow. 
+                innerRadius = $(R).data('inner-radius'),
+                outerRadius = $(R).data('outer-radius'),
+                // Radius of the entire circle.
+                radius = outerRadius;
+
+            var gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+            //gradient.addColorStop(0, "#" + $(R).data('inner-color') + "");
+            gradient.addColorStop(0, $(R).data('inner-color'));
+            gradient.addColorStop(1, $(R).data('outer-color'));
+
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            console.log(R.id);
+            $("#"+R.id).html(xcan);
+
+        }
+    </script>
+
+</body>
+</html>

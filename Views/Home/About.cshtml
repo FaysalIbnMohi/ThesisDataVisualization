@@ -1,0 +1,218 @@
+﻿@model List<FinalView>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/jquery.snippet.min.css" rel="stylesheet">
+    <link href="~/Content/css/styles.css" rel="stylesheet">
+    <style>
+        .w3-container, .w3-panel {
+            padding: 8px 4px;
+        }
+        #testname {
+            color: #08c;
+            font-family: 'FuturaExtraBold';
+            font-size: 35px;
+            font-weight: bolder;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-shadow: 0px 0px #2870F0;
+            text-align: center;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+
+        button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 22px;
+            color: black;
+        }
+
+            button:hover, a:hover {
+                opacity: 0.7;
+            }
+
+        canvas {
+            border: 0px solid black;
+        }
+
+        #easyPaginate {
+            float: left;
+            display: inline-flex;
+            padding: 10px;
+            margin: 5px;
+        }
+
+            #easyPaginate img {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+        .easyPaginateNav a {
+            padding: 5px;
+        }
+
+            .easyPaginateNav a.current {
+                font-weight: bold;
+                text-decoration: underline;
+            }
+    </style>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>*@
+    <script src="~/Scripts/1.8.1-jquery.min.js"></script>
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.snippet.min.js"></script>
+    <script src="~/Scripts/jquery.easyPaginate.js"></script>
+    <script src="~/Content/js/scripts.js"></script>
+    @*<style>
+            html, body, h1, h2, h3, h4, h5, h6 {
+                font-family: "Roboto", sans-serif
+            }
+        </style>*@
+    <script>
+        //$('#easyPaginate').easyPaginate({
+        //    paginateElement: 'img',
+        //    elementsPerPage: 3,
+        //    effect: 'climb'
+        //});
+        $(function () {
+            $('#easyPaginate').easyPaginate({
+                paginateElement: 'div',
+                elementsPerPage: 8,
+                effect: 'slide'
+            });
+            $('.resultview').each(function () {
+                myFunction(this);
+            });
+            //$(".card").click(function (R) {
+            //    windows.location.href("/Home/Details/" + R.id);
+            //})
+        });
+        function viewdetail(R) {
+            var innerRadius = $(R).data('inner-radius'),
+                outerRadius = $(R).data('outer-radius'),
+                outerColor = $(R).data('outer-color'),
+                innerColor = $(R).data('inner-color');
+            console.log(innerColor + " " + outerRadius + " " + outerColor + " " + innerColor);
+            $(".w3-twothird").load("/Home/Details", { Id: R.id, InnerRadius: innerRadius, OuterRadius: outerRadius, InnerColor: innerColor, OuterColor: outerColor });
+        }
+        function myFunction(R) {
+            var xcan = document.createElement("CANVAS");
+            xcan.width = 250;
+            xcan.height = 250;
+            var ctx = xcan.getContext('2d');
+            console.log($(R).data('inner-radius') + " " + $(R).data('outer-radius'))
+            var x = 125,
+                y = 125,
+                // Radii of the white glow.
+                innerRadius = $(R).data('inner-radius'),
+                outerRadius = $(R).data('outer-radius'),
+                // Radius of the entire circle.
+                radius = outerRadius;
+
+            var gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+            //gradient.addColorStop(0, "#" + $(R).data('inner-color') + "");
+            gradient.addColorStop(0, $(R).data('inner-color'));
+            gradient.addColorStop(1, $(R).data('outer-color'));
+
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            console.log(R.id);
+            $("#" + R.id).html(xcan);
+
+        }
+    </script>
+</head>
+<body class="w3-light-grey">
+
+    <!-- Page Container -->
+    <div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+        <!-- The Grid -->
+        <div class="w3-row-padding">
+
+            <!-- Left Column -->
+            <div class="w3-third" style="width:20%">
+
+                <div class="w3-white w3-text-grey w3-card-4">
+                    <div class="w3-display-container">
+                        <img src="~/Content/Image/download.jpg" style="width:100%" alt="Avatar"/>
+                        <div class="w3-display-bottomleft w3-container w3-text-black">
+                            <h2>Jane Doe</h2>
+                        </div>
+                    </div>
+                    <div class="w3-container">
+                        <p><i class="fa fa-child fa-fw w3-margin-right w3-large w3-text-teal"></i>Age : 56 Years</p>
+                        <p><i class="fa fa-intersex fa-fw w3-margin-right w3-large w3-text-teal"></i>Gender: Male</p>
+                        <p><i class="fa fa-calendar fa-fw w3-margin-right w3-large w3-text-teal"></i>Date: 05/05/2018</p>
+                        <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Phone Number: 1224435534</p>
+                        <hr>
+                        <br>
+                    </div>
+                </div><br>
+
+                <!-- End Left Column -->
+            </div>
+
+            <!-- Right Column -->
+            <div class="w3-twothird" style="width:80%">
+
+                <div class="w3-container w3-card w3-white w3-margin-bottom">
+                    <h2 class="w3-text-grey w3-padding-16"></h2>
+                    <div class="w3-container" style="width:20%">
+                        <div border="0" id="easyPaginate">
+                            @foreach (var item in Model)
+                            {
+                                <div class="card" style="cursor:pointer" id="reportid-@item.Id" onclick="viewdetail(this)" data-outer-radius="@item.OuterRadius" data-inner-radius="@item.InnerRadius" data-inner-color="@item.InnerColor" data-outer-color="@item.OuterColor">
+                                    @*<img src="https://www.w3schools.com/w3images/team2.jpg" alt="John" style="width:100%">*@
+                                    <div id=@item.Id class="resultview" data-outer-radius="@item.OuterRadius" data-inner-radius="@item.InnerRadius" data-inner-color="@item.InnerColor" data-outer-color="@item.OuterColor"></div>
+                                    <h1 id="testname">@item.TestName</h1>
+                                    <p class="">Resulted Value: @item.OrgResultedValue</p>
+                                    <p>Normal Range: (@item.OrgNormalMaxValue - @item.OrgNormalMinValue)</p>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
